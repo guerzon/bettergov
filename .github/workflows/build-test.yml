@@ -49,14 +49,7 @@ jobs:
         run: npm ci
 
       - name: Run ESLint
-        run: npm run lint:actions
-        continue-on-error: true
-
-      - name: Annotate Code Linting Results
-        uses: ataylorme/eslint-annotate-action@1.0.4
-        with:
-          repo-token: '${{ secrets.GITHUB_TOKEN }}'
-          report-json: 'eslint_report.json'
+        run: npm run lint
 
   e2e_tests:
     name: Playwright Tests
