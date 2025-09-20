@@ -18,7 +18,6 @@ jobs:
         architecture: [amd64, arm64]
 
     steps:
-
       - uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
@@ -35,12 +34,35 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/bettergov:${{ github.ref_name }}
             ghcr.io/${{ github.repository_owner }}/bettergov:latest
 
-  tests:
+  lint_checks:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint:actions
+        continue-on-error: true
+
+      - name: Annotate Code Linting Results
+        uses: ataylorme/eslint-annotate-action@1.0.4
+        with:
+          repo-token: '${{ secrets.GITHUB_TOKEN }}'
+          report-json: 'eslint_report.json'
+
+  e2e_tests:
     name: Playwright Tests
     runs-on: ubuntu-latest
 
     steps:
-
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
