@@ -8,7 +8,7 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
-FROM nginx:alpine as production
+FROM nginx:alpine AS production
 
 LABEL org.opencontainers.image.authors="guerzon@proton.me"
 LABEL org.opencontainers.image.url="https://bettergov.ph"
